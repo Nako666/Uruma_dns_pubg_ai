@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URUMA DNS AI Panel</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ffe7;
+    }
+    select, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #1e1e1e;
+      color: white;
+      border: 1px solid #00ffe7;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #dnsBox {
+      margin-top: 20px;
+      padding: 15px;
+      background: #1e1e1e;
+      border-radius: 8px;
+      border: 1px solid #00ffe7;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 18px;
+      white-space: pre-wrap;
+    }
+    .glow {
+      box-shadow: 0 0 10px #00ffe7;
+      transition: box-shadow 0.3s ease;
+    }
+    .glow:hover {
+      box-shadow: 0 0 20px #00ffe7;
+    }
+  </style>
+</head>
+<body>
+  <h1>URUMA DNS AI Panel</h1>
+
+  <div>
+    <select id="country">
+      <option value="de">🇩🇪 Germany</option>
+      <option value="tr">🇹🇷 Turkey</option>
+      <option value="ae">🇦🇪 UAE</option>
+      <option value="ir">🇮🇷 Iran</option>
+      <option value="al">🇦🇱 Albania</option>
+    </select>
+
+    <select id="ipVersion">
+      <option value="ipv4">IPv4</option>
+      <option value="ipv6">IPv6</option>
+    </select>
+
+    <select id="internetType">
+      <option value="mci">همراه اول</option>
+      <option value="irancell">ایرانسل</option>
+      <option value="tdl">مخابرات</option>
+    </select>
+  </div>
+
+  <button class="glow" onclick="generateDNS()">تولید DNS با هوش مصنوعی</button>
+
+  <div id="dnsBox">DNS تولید شده اینجا نمایش داده می‌شود</div>
+
+  <script>
+    const dnsDB = {
+      de: {
+        ipv4: ["8.8.8.8", "1.1.1.1"],
+        ipv6: ["2001:4860:4860::8888"]
+      },
+      tr: {
+        ipv4: ["193.192.98.66"],
+        ipv6: ["2001:4860:4860::8844"]
+      },
+      ae: {
+        ipv4: ["91.74.180.193"],
+        ipv6: ["2a00:1450:4001:815::200e"]
+      },
+      ir: {
+        ipv4: ["178.22.122.100"],
+        ipv6: ["2a01:488:67:1000::"]
+      },
+      al: {
+        ipv4: ["185.53.99.75"],
+        ipv6: ["2a00:1450:4001:819::200e"]
+      }
+    };
+
+    function getRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generateDNS() {
+      const country = document.getElementById("country").value;
+      const ipVersion = document.getElementById("ipVersion").value;
+      const internetType = document.getElementById("internetType").value;
+
+      const dnsList = dnsDB[country][ipVersion] || [];
+      if (!dnsList.length) {
+        return dnsBox.innerText = "هیچ DNS برای این انتخاب وجود ندارد.";
+      }
+
+      const dns = getRandom(dnsList);
+      document.getElementById("dnsBox").innerText =
+        `DNS (${ipVersion.toUpperCase()} · ${country.toUpperCase()} · ${internetType}):\n` +
+        dns;
+    }
+  </script>
+</body>
+</html>
